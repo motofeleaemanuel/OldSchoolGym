@@ -36,7 +36,7 @@ const HeroSection = () => {
             {/* Background Image */}
             <div className="absolute inset-0 pointer-events-none">
                 <Image
-                    src="/images/hero.jfif"
+                    src="/images/hero.jpg"
                     alt="Athlete deadlifting"
                     objectFit='cover'
                     fill
