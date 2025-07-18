@@ -1,11 +1,10 @@
 import { createSubscriptionPlan, getSubscriptionPlans } from '@/actions/subscriptions.actions';
-import { SubscriptionPlan } from '@/actions/subscriptions.types';
 import { SubscriptionPlanSchema } from '@/lib/schemas/subscriptions.schema';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const subscriptionPlans: SubscriptionPlan[] = await getSubscriptionPlans();
+        const subscriptionPlans = await getSubscriptionPlans();
         return NextResponse.json(subscriptionPlans, { status: 200 });
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';

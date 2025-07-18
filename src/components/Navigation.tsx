@@ -19,7 +19,7 @@ const Navigation = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.2 } },
   }
   const linkHover = { color: linkHoverColor, transition: { duration: 0.2 } }
-  const links = [{ link: '/', label: 'Home' }, { link: '/gallery', label: 'Gallery' }, { link: '/blog', label: "Blog" }]
+  const links = [{ link: '/pages/home', label: 'Home' }, { link: '/pages/gallery', label: 'Gallery' }, { link: '/pages/blog', label: "Blog" }]
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-[var(--black)] bg-opacity-50 md:bg-transparent md:bg-opacity-0 backdrop-blur-lg shadow-lg">

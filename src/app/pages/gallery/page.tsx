@@ -76,7 +76,7 @@ export default function GallerySection() {
   return (
     <>
       <motion.section
-        className="bg-[var(--black)] text-gray-50 mt-[64px] py-8"
+        className="bg-[var(--black)] text-gray-50 mt-[64px] py-8 h-screen"
         initial="hidden"
         animate="visible"
         variants={containerVariant}

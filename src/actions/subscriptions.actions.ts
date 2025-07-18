@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import { SubscriptionPlan } from "./subscriptions.types";
-import { Subscription } from "@/lib/models/Subscription.model";
+import { Subscription } from "@/lib/models/Subscription";
 
 export const createSubscriptionPlan = async (data: SubscriptionPlan) => {
     try {
@@ -25,5 +25,18 @@ export const getSubscriptionPlans = async () => {
         return subscriptionPlans;
     } catch (error) {
         throw new Error("Failed to fetch subscription plans", { cause: error });
+    }
+}
+
+export const getSubscriptionPlanById = async (id: string) => {
+    try {
+        await dbConnect();
+        const subscriptionPlan = await Subscription.findById(id);
+        if (!subscriptionPlan) {
+            throw new Error(`Subscription plan with id ${id} not found`);
+        }
+        return subscriptionPlan;
+    } catch (error) {
+        throw new Error("Failed to fetch subscription plan", { cause: error });
     }
 }
