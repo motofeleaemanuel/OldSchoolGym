@@ -1,25 +1,20 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, CheckCircle, Edit2, Trash2 } from 'lucide-react';
-import { SubscriptionPlan } from '@/actions/subscriptions.types';
-import { useRouter } from 'next/navigation';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Calendar, CheckCircle, Edit2, Trash2 } from 'lucide-react'
+import { SubscriptionPlan } from '@/actions/subscriptions.types'
+import { useRouter } from 'next/navigation'
 
 interface AdminSubscriptionCardProps {
-  plan: SubscriptionPlan;
-  idx: number;
-  onDelete: (id: string) => void;
+  plan: SubscriptionPlan
+  idx: number
+  onDelete: (id: string) => void
 }
 
-const AdminSubscriptionCard: React.FC<AdminSubscriptionCardProps> = ({ plan, idx, onDelete }) => {
-    const router = useRouter();
-
-    const handleDelete = (id: string) => {
-        onDelete(id);
-    }
+export default function AdminSubscriptionCard({ plan, idx, onDelete }: AdminSubscriptionCardProps) {
+  const router = useRouter()
 
   return (
     <motion.div
-      key={plan.name}
       className="relative cursor-pointer bg-[var(--black)] border border-gray-700 rounded-2xl p-6 flex flex-col items-center text-center shadow-neon"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -49,15 +44,13 @@ const AdminSubscriptionCard: React.FC<AdminSubscriptionCardProps> = ({ plan, idx
           Edit
         </button>
         <button
+          onClick={() => onDelete(plan._id || '')}
           className="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition"
-            onClick={() => plan._id && handleDelete(plan._id)}
         >
           <Trash2 className="w-5 h-5 mr-2" />
           Delete
         </button>
       </div>
     </motion.div>
-  );
-};
-
-export default AdminSubscriptionCard;
+  )
+}

@@ -5,30 +5,47 @@ import Image from 'next/image'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { GalleryHorizontalIcon, X, PlusCircle, Trash2 } from 'lucide-react'
 import Modal from '@/components/Modal'
-
-// Mock images as in original GallerySection
-const IMAGES = [
-  { src: '/images/logo.jpg', datetime: '2025-07-10T14:30:00' },
-  { src: '/images/logo.jpg', datetime: '2025-07-12T09:15:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-07-13T17:50:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-07-08T11:05:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-07-14T20:00:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-06-30T08:00:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-06-25T19:30:00' },
-  { src: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=80', datetime: '2025-06-07T07:45:00' }
-]
+import { useRouter } from 'next/navigation'
+import useSWR from 'swr'
+import { toast } from 'sonner'
 
 // Animation variants
 const containerVariant: Variants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.2 } } }
 const itemVariant: Variants = { hidden: { opacity: 0, scale: 0.8 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } } }
 
+const fetcher = (url: string) => fetch(url).then(res => res.json())
+
+type ImageDoc = {
+  _id: string
+  cloudinaryUrl: string
+  createdAt?: string
+}
+
+type ApiResponse = {
+  success: boolean
+  images: ImageDoc[]
+}
+
 export default function AdminGalleryPage() {
+  const router = useRouter()
+  const { data, error, mutate } = useSWR<ApiResponse>('/api/v1/gallery', fetcher)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [filterMonth, setFilterMonth] = useState('All')
   const [page, setPage] = useState(0)
   const PAGE_SIZE = 6
+
+  if (error) return <div className="text-red-500">Failed to load images.</div>
+  if (!data) return <div>Loading...</div>
+
+  // Use fetched images
+  const IMAGES = data.images.map(img => ({
+    _id: img._id,
+    src: img.cloudinaryUrl,
+    datetime: img.createdAt || ''
+  }))
 
   // Sort descending
   const sorted = [...IMAGES].sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
@@ -54,21 +71,39 @@ export default function AdminGalleryPage() {
   }, {} as Record<string, typeof paged>)
 
   const openDelete = (idx: number) => { setPendingDeleteIndex(idx); setIsModalOpen(true) }
-  const confirmDelete = () => {
-    if (pendingDeleteIndex !== null) {
-      const globalIdx = page * PAGE_SIZE + pendingDeleteIndex
-      sorted.splice(globalIdx, 1)
-      setPendingDeleteIndex(null)
+  const confirmDelete = async () => {
+    setIsLoading(true)
+    if (pendingDeleteIndex === null){
+      setIsLoading(false)
+      toast.error('No image selected for deletion')
+      return
     }
+    try{
+      const res = await fetch(`/api/v1/gallery/${paged[pendingDeleteIndex!]._id}`, {
+        method: 'DELETE',
+      })
+      if(!res.ok) throw new Error('Failed to delete image')
+        mutate();
+      toast.success('Image deleted successfully')
+      
+    }catch(err) {
+      console.error('Delete failed:', err)
+      toast.error('Failed to delete image')
+    }finally {
+      setIsLoading(false)
+    }
+    // TODO: call delete API
+    setPendingDeleteIndex(null)
     setIsModalOpen(false)
   }
+
   const prevImage = () => setLightboxIndex(idx => (idx === null ? null : (idx - 1 + sorted.length) % sorted.length))
   const nextImage = () => setLightboxIndex(idx => (idx === null ? null : (idx + 1) % sorted.length))
 
   return (
     <>
       <section className="bg-[var(--black)] text-gray-50 min-h-screen">
-        <div>
+        <div className="px-4 py-8">
           {/* Header + filter + add */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between mb-8">
             <div className="flex items-center space-x-4">
@@ -79,18 +114,18 @@ export default function AdminGalleryPage() {
               <select
                 value={filterMonth}
                 onChange={e => { setFilterMonth(e.target.value); setPage(0) }}
-                className="p-2 border border-gray-600 rounded-lg text-white"
+                className="p-2 border border-[#333] rounded-lg text-white bg-black"
               >
                 <option className='bg-black text-white'>All</option>
                 {months.map(m => <option className='bg-black text-white' key={m}>{m}</option>)}
               </select>
             </div>
             <button
-              onClick={() => {/* trigger add workflow */}}
+              onClick={() => router.push('/admin/dashboard/gallery/upload')}
               className="flex items-center justify-center w-full sm:w-auto px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary)]/80 rounded-lg text-white transition"
             >
               <PlusCircle className="w-6 h-6" />
-              <span className="ml-2 hidden sm:inline">Add Image</span>
+              <span className="ml-2 hidden sm:inline">Upload Images</span>
             </button>
           </div>
 
@@ -141,7 +176,7 @@ export default function AdminGalleryPage() {
       </AnimatePresence>
 
       {/* Delete Confirmation */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={confirmDelete} cancelText="Cancel" confirmText="Delete" modalText="Are you sure you want to delete this image?" />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={confirmDelete} isLoading={isLoading} cancelText="Cancel" confirmText="Delete" modalText="Are you sure you want to delete this image?" />
     </>
   )
 }

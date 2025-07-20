@@ -26,7 +26,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16 py-2">
           {/* Logo */}
-          <div className="flex-shrink-0 cursor-pointer" onClick={() => router.push('/')}>
+          <div className="flex-shrink-0 cursor-pointer" onClick={() => router.push('/pages/home')}>
             <Image
               src="/images/logo.jpg"
               alt="Logo"

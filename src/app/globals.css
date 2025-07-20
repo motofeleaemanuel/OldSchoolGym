@@ -6,6 +6,7 @@
   --foreground: #ededed;
   --primary: #26ad8e;
   --primary-dark: #000;
+  --breakpoint-lmd: 900px;
 }
 
 /* #5c26ad */

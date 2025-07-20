@@ -1,16 +1,19 @@
-"use client"
+'use client'
 import React from 'react'
-import { X } from 'lucide-react'
+import { Loader2, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Modal({ isOpen, onClose, onConfirm, cancelText, confirmText, modalText }: {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  cancelText: string;
-  confirmText: string;
-  modalText: string;
-}) {
+interface ModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+  cancelText: string
+  confirmText: string
+  modalText: string
+  isLoading?: boolean
+}
+
+export default function Modal({ isOpen, onClose, onConfirm, cancelText, confirmText, modalText, isLoading }: ModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -27,25 +30,16 @@ export default function Modal({ isOpen, onClose, onConfirm, cancelText, confirmT
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
+            <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white">
               <X className="w-6 h-6" />
             </button>
             <p>{modalText}</p>
             <div className="mt-6 flex justify-end">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-white font-medium transition"
-              >
+              <button onClick={onClose} className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-white font-medium transition">
                 {cancelText}
               </button>
-              <button
-                onClick={onConfirm}
-                className="ml-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition"
-              >
-                {confirmText}
+              <button onClick={onConfirm} disabled={isLoading} className="ml-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-medium transition">
+                {isLoading ? <div className='flex items-center'> <Loader2 className="animate-spin w-5 h-5" /> Deleting...</div> : confirmText}
               </button>
             </div>
           </motion.div>
@@ -54,9 +48,3 @@ export default function Modal({ isOpen, onClose, onConfirm, cancelText, confirmT
     </AnimatePresence>
   )
 }
-
-// Usage example:
-// const [open, setOpen] = useState(false)
-// <Modal isOpen={open} onClose={() => setOpen(false)}>Your content here</Modal>
-
-// Let me know if you want modal variants for forms, confirmations, or destructive actions for your upcoming admin interfaces this week.

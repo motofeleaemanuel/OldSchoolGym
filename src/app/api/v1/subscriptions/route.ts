@@ -7,6 +7,7 @@ export async function GET() {
         const subscriptionPlans = await getSubscriptionPlans();
         return NextResponse.json(subscriptionPlans, { status: 200 });
     } catch (error: unknown) {
+        console.error('Error fetching subscription plans:', error);
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         console.error('Error fetching subscription plans:', errorMessage);
         return NextResponse.json(

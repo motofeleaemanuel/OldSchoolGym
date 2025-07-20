@@ -36,7 +36,7 @@ export default function Sidebar() {
     return (
         <>
             {/* Mobile menu button fixed top-left */}
-            <div className="fixed top-0 left-0 right-0 z-50 md:hidden bg-black h-14 flex items-center px-4">
+             <div className="fixed top-0 left-0 right-0 z-50 lg:hidden bg-black h-14 flex items-center px-4">
                 <button
                     className="p-2 text-gray-200 bg-black rounded-lg hover:bg-gray-800 transition"
                     onClick={() => setSidebarOpen(true)}
@@ -45,27 +45,25 @@ export default function Sidebar() {
                 </button>
             </div>
 
-
             {/* Sidebar overlay for mobile when open */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${sidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                    } md:hidden`}
+                className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${sidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'} lg:hidden`}
                 onClick={() => setSidebarOpen(false)}
             />
 
             <aside
-                className={`fixed inset-y-0  h-screen left-0 w-76 bg-[#111] border-r border-[#333] flex flex-col justify-between transform z-50 transition-transform
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:flex`}
+                className={`fixed inset-y-0 h-screen left-0 w-76 bg-[#111] border-r border-[#333] flex flex-col justify-between transform z-50 transition-transform
+                    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:flex`}
             >
                 <div>
-                    <div className="flex items-center justify-between p-6 md:hidden">
+                    <div className="flex items-center justify-between p-6 lg:hidden">
                         <h2 className="text-2xl font-extrabold text-white">Dashboard</h2>
                         <button onClick={() => setSidebarOpen(false)}>
                             <X className="w-6 h-6 text-gray-200" />
                         </button>
                     </div>
 
-                    <h2 className="hidden md:block text-2xl font-extrabold text-white p-6">
+                    <h2 className="hidden lg:block text-2xl font-extrabold text-white p-6">
                         Dashboard
                     </h2>
 
@@ -77,9 +75,10 @@ export default function Sidebar() {
                                     key={href}
                                     href={href}
                                     className={`flex items-center gap-3 px-6 py-3 transition-all rounded-lg mx-4
-                    ${active
-                                            ? 'bg-[var(--primary)] text-white shadow-[0_0_10px_var(--primary)]'
-                                            : 'text-gray-50 hover:bg-[#222] hover:text-white'
+                                        ${
+                                            active
+                                                ? 'bg-[var(--primary)] text-white shadow-[0_0_10px_var(--primary)]'
+                                                : 'text-gray-50 hover:bg-[#222] hover:text-white'
                                         }`}
                                     onClick={() => setSidebarOpen(false)}
                                 >

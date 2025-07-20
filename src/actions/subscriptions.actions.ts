@@ -40,3 +40,29 @@ export const getSubscriptionPlanById = async (id: string) => {
         throw new Error("Failed to fetch subscription plan", { cause: error });
     }
 }
+
+export const updateSubscriptionPlan = async (id: string, data: Partial<SubscriptionPlan>) => {
+    try {
+        await dbConnect();
+        const updatedPlan = await Subscription.findByIdAndUpdate(id, data, { new: true });
+        if (!updatedPlan) {
+            throw new Error(`Subscription plan with id ${id} not found`);
+        }
+        return updatedPlan;
+    } catch (error) {
+        throw new Error("Failed to update subscription plan", { cause: error });
+    }
+}
+
+export const deleteSubscriptionPlan = async (id: string) => {
+    try {
+        await dbConnect();
+        const deletedPlan = await Subscription.findByIdAndDelete(id);
+        if (!deletedPlan) {
+            throw new Error(`Subscription plan with id ${id} not found`);
+        }
+        return deletedPlan;
+    } catch (error) {
+        throw new Error("Failed to delete subscription plan", { cause: error });
+    }
+}
