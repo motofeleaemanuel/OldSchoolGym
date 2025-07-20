@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createImageDocuments, getGalleryImages } from '@/actions/gallery.actions';
 import cloudinary from '../../../../../cloudinary';
 
+export const runtime = 'nodejs';
+
 export async function GET() {
     try {
         const images = await getGalleryImages();
