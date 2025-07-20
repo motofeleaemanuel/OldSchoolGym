@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import SplashScreen from "@/components/SplashScreen";
 import { Footer } from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <SplashScreen />
         <Navigation />
         {children}
+        <Analytics />
         <Footer />
       </body>
     </html>
