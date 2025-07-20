@@ -109,12 +109,12 @@ export default function GallerySection() {
   return (
     <>
       <motion.section
-        className="bg-[var(--black)] text-gray-50 mt-[64px] py-8"
+        className="bg-[var(--black)] min-h-screen overflow-y-scroll text-gray-50 mt-[64px] py-8"
         initial="hidden"
         animate="visible"
         variants={containerVariant}
       >
-        <div className="max-w-7xl h-screen mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header + filter */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
             <motion.div

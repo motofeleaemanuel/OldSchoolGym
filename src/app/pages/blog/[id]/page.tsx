@@ -86,7 +86,7 @@ export default function BlogPostPage() {
       <span className="text-sm text-[var(--primary)]">{post.date}</span>
       <h1 className="text-4xl font-extrabold mb-6 text-white">{post.title}</h1>
       <div className="prose prose-invert text-gray-300" dangerouslySetInnerHTML={{ __html: post.content }} />
-      <Link href="/blog" className="mt-10 inline-block text-primary font-semibold">← Back to Blog</Link>
+      <Link href="/pages/blog" className="mt-10 inline-block text-primary font-semibold">← Back to Blog</Link>
     </motion.div>
   )
 }

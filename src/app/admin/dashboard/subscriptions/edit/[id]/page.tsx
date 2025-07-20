@@ -45,7 +45,7 @@ export default function EditSubscriptionPage() {
   }
 
   return (
-    <main className="p-6">
+    <main className='w-auto'>
       <SubscriptionForm initialData={initialData} />
     </main>
   )

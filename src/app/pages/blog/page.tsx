@@ -143,7 +143,7 @@ function BlogCard({
         <span className="text-xs text-gray-400 mb-4">{post.readTime}</span>
         <p className="text-gray-300 flex-grow mb-6">{post.excerpt}</p>
         <Link
-          href={`/blog/${post.id}`}
+          href={`/pages/blog/${post.id}`}
           className="mt-auto self-start text-primary font-semibold flex items-center"
         >
           Read More

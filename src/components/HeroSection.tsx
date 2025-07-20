@@ -86,7 +86,7 @@ const HeroSection = () => {
                     Cutting-edge workouts, expert guidance, and a glowing community to help you shine.
                 </motion.p>
                 <motion.button
-                    className="mt-8 bg-[var(--primary)] text-black font-bold px-8 py-4 rounded-full shadow-neon"
+                    className="mt-8 bg-[var(--primary)] text-black font-bold px-8 py-4 rounded-lg shadow-neon"
                     initial={{ boxShadow: '0 0 10px var(--primary)', opacity: 0 }}
                     animate={{
                         opacity: 1,

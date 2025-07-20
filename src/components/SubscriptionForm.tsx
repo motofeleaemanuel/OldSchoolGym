@@ -77,7 +77,7 @@ export default function SubscriptionForm({ initialData }: SubscriptionFormProps)
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 w-auto">
             <button
                 type="button"
                 onClick={() => router.push('/admin/dashboard/subscriptions')}
